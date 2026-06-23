@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arjun Chawla | Portfolio</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>A</text></svg>">
+    <meta name="description" content="Portfolio of Arjun Chawla - Risk Management &amp; Financial Analyst">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. LIGHT & DARK THEME VARIABLES --- */
+        :root {
+            --bg: #F9F9F9; 
+            --surface: #FFFFFF; 
+            --text: #050505; 
+            --text-muted: #555555;
+            --accent: #2563EB; 
+            --accent-glow: rgba(37, 99, 235, 0.15);
+            --border: rgba(0, 0, 0, 0.1);
+            --shadow: rgba(0, 0, 0, 0.05);
+            --invert-noise: 1;
+            --expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #050505; 
+            --surface: #111111; 
+            --text: #F3F4F6; 
+            --text-muted: #9CA3AF;
+            --accent: #3B82F6; 
+            --accent-glow: rgba(59, 130, 246, 0.2);
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow: rgba(0, 0, 0, 0.4);
+            --invert-noise: 0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        html, body { scroll-behavior: smooth; overflow-x: clip; width: 100%; max-width: 100vw; }
+
+        body {
+            background-color: var(--bg); color: var(--text);
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Subtle noise texture */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03; z-index: 9999; pointer-events: none;
+            filter: invert(var(--invert-noise));
+        }
+
+        /* --- 2. AESTHETIC MINIMALIST FINANCE BACKGROUND --- */
+        .bg-typography-container {
+            position: fixed; top: -20vh; left: -10vw; width: 120vw; height: 140vh; 
+            z-index: -2; pointer-events: none; display: flex; flex-direction: column; justify-content: center; gap: 2vh;
+            opacity: 0.06; transform: rotate(-5deg); 
+            -webkit-mask-image: linear-gradient(to bottom, transparent 5%, black 30%, black 70%, transparent 95%);
+            mask-image: linear-gradient(to bottom, transparent 5%, black 30%, black 70%, transparent 95%);
+            transition: opacity 0.5s ease;
+        }
+        [data-theme="dark"] .bg-typography-container { opacity: 0.04; }
+
+        .marquee-row {
+            display: flex; white-space: nowrap; font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700; font-size: clamp(4rem, 12vw, 16rem); color: transparent; 
+            -webkit-text-stroke: 1.5px var(--text); text-transform: uppercase; line-height: 1; user-select: none;
+        }
+        .marquee-row span { padding-right: 3rem; }
+        
+        .scroll-left { animation: scrollLeft 90s linear infinite; }
+        .scroll-right { animation: scrollRight 110s linear infinite; }
+        .scroll-left-slow { animation: scrollLeft 130s linear infinite; }
+        .scroll-right-slow { animation: scrollRight 100s linear infinite; }
+
+        @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+        /* --- 3. CUSTOM PHYSICS CURSOR --- */
+        .cursor-dot, .cursor-circle {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; z-index: 10000;
+        }
+        .cursor-dot { width: 5px; height: 5px; background-color: var(--accent); }
+        .cursor-circle {
+            width: 40px; height: 40px; border: 2px solid var(--accent); transition: width 0.3s var(--expo), height 0.3s var(--expo), background-color 0.3s;
+        }
+        .cursor-hover .cursor-circle { width: 70px; height: 70px; background-color: var(--accent-glow); border-color: transparent; }
+
+        /* --- 4. TYPOGRAPHY & BUTTONS --- */
+        h1, h2, h3, h4, .display-font { font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-transform: uppercase; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5vw; }
+
+        .btn-wrap { display: inline-block; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; padding: 1.2rem 2.5rem; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px; text-decoration: none; transition: all 0.4s var(--expo); border: 1px solid var(--accent); border-radius: 4px; text-align: center;
+        }
+        
+        /* NEW: Stronger Color Hover on Main Buttons */
+        .btn-solid { background: var(--accent); color: #fff; }
+        .btn-solid:hover { 
+            background: var(--text); 
+            color: var(--bg); 
+            border-color: var(--text);
+            transform: translateY(-4px); 
+            box-shadow: 0 15px 25px var(--shadow);
+        }
+        
+        .btn-outline { border-color: var(--text); color: var(--text); background: transparent; }
+        .btn-outline:hover { background: var(--text); color: var(--bg); transform: translateY(-4px); box-shadow: 0 15px 25px var(--shadow); }
+
+        /* Project Card Specific Button */
+        .btn-project {
+            display: inline-flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.5rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--bg); background: var(--text);
+            border: 1px solid var(--text); border-radius: 4px; text-decoration: none;
+            transition: all 0.3s var(--expo); width: 100%; text-align: center;
+        }
+        .btn-project i { transition: transform 0.3s var(--expo); }
+        .btn-project:hover { background: transparent; color: var(--text); }
+        .btn-project:hover i { transform: translateX(5px); color: var(--accent); }
+
+        /* --- 5. ANIMATION CLASSES --- */
+        .reveal-up { opacity: 0; transform: translateY(50px); transition: all 1s var(--expo); }
+        .reveal-up.active { opacity: 1; transform: translateY(0); }
+        .reveal-mask { overflow: hidden; display: inline-block; vertical-align: top; }
+        .reveal-text { display: inline-block; transform: translateY(110%); transition: transform 1.2s var(--expo); }
+        .reveal-text.active { transform: translateY(0); }
+
+        /* --- 6. NAVIGATION & THEME TOGGLE --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 5vw; display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; background: linear-gradient(to bottom, var(--bg) 80%, transparent); transition: background 0.5s ease;
+        }
+        .logo { font-size: 1.5rem; font-family: 'Space Grotesk'; letter-spacing: 2px; text-decoration: none; color: var(--text); position: relative; z-index: 101; }
+        .logo span { color: var(--accent); }
+        
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        
+        /* NEW: Smooth Navbar Underline Animation */
+        .nav-links a {
+            color: var(--text); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
+            position: relative; transition: color 0.3s; padding-bottom: 4px;
+        }
+        .nav-links a::after { 
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; 
+            background: var(--accent); 
+            transform: scaleX(0); transform-origin: right; 
+            transition: transform 0.4s var(--expo); 
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+        .theme-toggle {
+            width: 45px; height: 45px; border-radius: 50%; margin-left: 1.5rem; background: var(--surface); border: 1px solid var(--border);
+            color: var(--text); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s var(--expo), background 0.3s, color 0.3s, border-color 0.3s; position: relative; z-index: 101;
+        }
+        .theme-toggle:hover { transform: scale(1.1); color: var(--accent); border-color: var(--accent); }
+
+        .mobile-menu-btn { display: none; flex-direction: column; gap: 6px; background: none; border: none; z-index: 101; padding: 10px; cursor: pointer; }
+        .mobile-menu-btn span { width: 30px; height: 2px; background: var(--text); transition: 0.3s; transform-origin: left; }
+
+        /* --- 7. HERO SECTION --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
+        .hero-bg-monogram {
+            position: absolute; top: 50%; right: 5vw; transform: translateY(-50%); font-size: 35vw; font-family: 'Space Grotesk'; font-weight: 700;
+            color: var(--text); opacity: 0.02; line-height: 0.8; z-index: -1; pointer-events: none; transition: color 0.5s ease;
+        }
+        .hero-subtitle { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 2rem; color: var(--accent); font-weight: 700; }
+        .hero h1 { font-size: clamp(3rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -3px; margin-bottom: 2rem; }
+        .hero-bottom {
+            position: absolute; bottom: 3rem; left: 5vw; right: 5vw; display: flex; justify-content: space-between; align-items: flex-end;
+            border-top: 1px solid var(--border); padding-top: 1.5rem;
+        }
+        .hero-desc { max-width: 500px; font-size: clamp(1rem, 2vw, 1.1rem); line-height: 1.6; color: var(--text-muted); }
+
+        /* --- 8. EDITORIAL GRID (EDUCATION & EXP) --- */
+        .editorial-section { padding: 15vh 5vw; border-bottom: 1px solid var(--border); min-height: 100vh; display: flex; align-items: center; }
+        .editorial-grid { display: grid; grid-template-columns: 1fr 2.5fr; gap: 4rem; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .sticky-header { position: sticky; top: 20vh; height: fit-content; }
+        .sticky-header h2 { font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1; margin-bottom: 1rem; color: var(--text); }
+        .sticky-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .content-stream { display: flex; flex-direction: column; gap: 3rem; }
+        
+        .stream-card {
+            background: var(--surface); border: 1px solid var(--border); padding: clamp(1.5rem, 4vw, 4rem); border-radius: 8px; box-shadow: 0 15px 40px var(--shadow);
+            transform-style: preserve-3d; transition: transform 0.5s var(--expo), border-color 0.5s;
+        }
+        .stream-card:hover { border-color: var(--accent); }
+
+        .card-meta { margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+        .card-meta h3 { font-size: clamp(1.5rem, 4vw, 2.2rem); color: var(--text); margin-bottom: 0.5rem; }
+        .card-meta h4 { font-size: clamp(1rem, 2vw, 1.1rem); color: var(--accent); font-family: 'Space Grotesk'; margin-bottom: 0.5rem; }
+        .card-meta span { font-size: 0.9rem; color: var(--text-muted); font-family: 'Inter'; font-weight: 500; }
+        .card-details ul { margin-left: 1.5rem; line-height: 1.8; color: var(--text-muted); font-size: 1.05rem; }
+        .card-details p { line-height: 1.8; color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1rem; }
+        .highlight-metric { color: var(--text); font-weight: 600; }
+
+        /* --- 9. SKILLS & METRICS --- */
+        .skills-section { padding: 15vh 5vw; border-bottom: 1px solid var(--border); min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 4rem; }
+        .metric-box {
+            padding: clamp(1.5rem, 3vw, 3rem) clamp(1rem, 2vw, 2rem); border: 1px solid var(--border); background: var(--surface); text-align: center; transition: transform 0.4s var(--expo); border-radius: 8px;
+        }
+        .metric-box:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px var(--shadow); }
+        .metric-box h4 { font-size: clamp(2.2rem, 6vw, 3rem); color: var(--accent); margin-bottom: 0.5rem; }
+        .metric-box p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); font-weight: 600; }
+        
+        .skills-tags { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; max-width: 1000px; margin: 0 auto; }
+        .skill-tag {
+            padding: clamp(0.75rem, 2vw, 1rem) clamp(1.2rem, 3vw, 2rem); border: 1px solid var(--border); background: var(--surface); color: var(--text); font-weight: 600; letter-spacing: 1px; border-radius: 50px; transition: all 0.3s;
+        }
+        .skill-tag:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); }
+
+        /* --- 10. PROJECTS SECTION (CLEAN GRID, NO BUGGY JS) --- */
+        .projects-stack-section { padding: 15vh 5vw; min-height: 100vh; border-bottom: 1px solid var(--border); } 
+        
+        .projects-grid-layout {
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 6rem; max-width: 1400px; margin: 0 auto; width: 100%; align-items: start;
+        }
+
+        /* Fixed Left Column */
+        .projects-left { position: sticky; top: 15vh; flex-shrink: 0; }
+        .projects-left h2 { font-size: clamp(3rem, 6vw, 6rem); line-height: 1; margin-bottom: 1.5rem; color: var(--text); }
+        .projects-left p { font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-muted); max-width: 400px; line-height: 1.6; margin-bottom: 3rem; }
+        
+        /* Hide the old scroll indicator since it's a normal layout now */
+        .scroll-indicator { display: none; } 
+
+        .projects-right-window { 
+            display: flex; flex-direction: column; gap: 4rem; width: 100%;
+        }
+        
+        /* STANDARD VISIBLE CARDS */
+        .project-card {
+            position: relative; width: 100%; height: auto;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+            box-shadow: 0 15px 40px var(--shadow); overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .project-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        .project-cover {
+            position: relative; width: 100%; height: 350px; overflow: hidden; border-bottom: 1px solid var(--border);
+        }
+        .cover-img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--expo);
+        }
+        .project-card:hover .cover-img { transform: scale(1.05); }
+
+        /* Hide the dark hover overlays - text will be readable below */
+        .cover-overlay, .cover-title { display: none; }
+
+        .project-info { 
+            padding: 3.5rem; display: flex; flex-direction: column;
+        }
+        .project-info h3 { font-size: clamp(1.6rem, 5vw, 2.2rem); margin-bottom: 1rem; line-height: 1.2; color: var(--text); }
+        .project-category {
+            display: inline-block; width: fit-content; padding: 6px 15px; border: 1px solid var(--accent); font-size: 0.75rem; text-transform: uppercase; 
+            font-family: 'Space Grotesk'; letter-spacing: 2px; margin-bottom: 1.5rem; color: var(--accent); font-weight: 700; border-radius: 50px;
+        }
+        .project-info p { font-size: clamp(0.95rem, 2vw, 1.05rem); color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+        .project-info ul { margin-left: 1.5rem; font-size: clamp(0.95rem, 2vw, 1.05rem); color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem;}
+
+        .project-action-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;}
+        .project-action-footer .btn-project { width: auto; padding: 0.8rem 1.5rem;}
+
+        /* --- 11. FOOTER --- */
+        footer { padding: 15vh 5vw 10vh; text-align: center; min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+        footer h2 { font-size: clamp(2.5rem, 8vw, 6rem); margin-bottom: 2rem; color: var(--text); }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 5rem; }
+        
+        /* --- 12. RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            .cursor-dot, .cursor-circle { display: none !important; }
+            * { cursor: auto !important; }
+            
+            .mobile-menu-btn { display: flex; }
+            
+            .nav-links {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--surface); flex-direction: column;
+                justify-content: center; align-items: center; gap: 3rem; transform: translateY(-100%); transition: transform 0.5s var(--expo);
+            }
+            .nav-links.active { transform: translateY(0); }
+            .nav-links a { font-size: 1.5rem; }
+            .theme-toggle { margin-left: 0; margin-top: 1rem; }
+
+            .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; padding-bottom: 2rem; }
+            .hero-bg-monogram { font-size: 50vw; top: 30%; }
+            
+            .editorial-section, .skills-section { height: auto; min-height: auto; padding: 10vh 5vw; }
+            .editorial-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .sticky-header { position: relative; top: 0; margin-bottom: 1rem; }
+            .metrics-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+            
+            /* Mobile Layout Overrides */
+            .projects-stack-section { padding: 10vh 5vw; border-bottom: 1px solid var(--border);}
+            .projects-grid-layout { grid-template-columns: 1fr; gap: 3rem; }
+            .projects-left { position: relative; top: 0; }
+            
+            .project-cover { height: 250px; }
+            .project-info { padding: clamp(1.5rem, 5vw, 2.5rem); }
+
+            .footer-links { flex-direction: column; gap: 1.5rem; width: 100%; max-width: 400px; }
+        }
+
+        /* --- 13. EXTRA SMALL MOBILE DEVICES (< 600px) --- */
+        @media (max-width: 600px) {
+            .metrics-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .hero-subtitle { font-size: 0.75rem; letter-spacing: 3px; }
+            .hero-bottom { flex-direction: column; gap: 1.5rem; align-items: stretch; }
+            .editorial-section, .skills-section, .projects-stack-section { padding: 8vh 5vw; }
+            .nav-links a { font-size: 1.2rem; }
+            .btn-wrap, .btn { width: 100%; display: block; }
+            .project-cover { height: 200px; }
+            .skills-tags { gap: 0.5rem; }
+            .skill-tag { padding: 0.75rem 1.2rem; font-size: 0.85rem; }
+            .project-action-footer .btn-project { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-typography-container">
+        <div class="marquee-row scroll-left">
+            <span>ASSETS • LIABILITIES • EQUITY • CASH FLOW • MARGIN • DEPRECIATION •</span>
+            <span>ASSETS • LIABILITIES • EQUITY • CASH FLOW • MARGIN • DEPRECIATION •</span>
+        </div>
+        <div class="marquee-row scroll-right">
+            <span>REVENUE • LEDGER • CAPITAL • AMORTIZATION • FORECAST • DIVIDEND •</span>
+            <span>REVENUE • LEDGER • CAPITAL • AMORTIZATION • FORECAST • DIVIDEND •</span>
+        </div>
+        <div class="marquee-row scroll-left-slow">
+            <span>ROI • VALUATION • LIQUIDITY • PROFITABILITY • SOLVENCY • VARIANCE •</span>
+            <span>ROI • VALUATION • LIQUIDITY • PROFITABILITY • SOLVENCY • VARIANCE •</span>
+        </div>
+        <div class="marquee-row scroll-right-slow">
+            <span>WORKING CAPITAL • OVERHEAD • PAYABLES • RECEIVABLES • TAXATION •</span>
+            <span>WORKING CAPITAL • OVERHEAD • PAYABLES • RECEIVABLES • TAXATION •</span>
+        </div>
+        <div class="marquee-row scroll-left">
+            <span>AUDIT • COMPLIANCE • IND AS • IFRS • RECONCILIATION • EQUITIES •</span>
+            <span>AUDIT • COMPLIANCE • IND AS • IFRS • RECONCILIATION • EQUITIES •</span>
+        </div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle"></div>
+
+    <nav>
+        <a href="#home" class="logo" id="tmpl-logo">A. <span>CHAWLA</span></a>
+        
+        <button class="mobile-menu-btn" aria-label="Toggle Navigation">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="nav-links">
+            <a href="#education" class="magnetic-item nav-item">Education</a>
+            <a href="#skills" class="magnetic-item nav-item">Skills</a>
+            <a href="#experience" class="magnetic-item nav-item">Experience</a>
+            <a href="#projects" class="magnetic-item nav-item">Projects</a>
+            <button class="theme-toggle magnetic-item" id="theme-toggle" aria-label="Toggle Light/Dark Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section id="home" class="hero container">
+        <div class="hero-bg-monogram" id="tmpl-monogram">AC</div>
+        <div class="hero-subtitle">
+            <span class="reveal-mask"><span class="reveal-text delay-1" id="tmpl-subtitle">Risk Management &amp; Financial Analyst</span></span>
+        </div>
+        <h1>
+            <span class="reveal-mask"><span class="reveal-text delay-2" id="tmpl-fname">Arjun</span></span><br>
+            <span class="reveal-mask"><span class="reveal-text delay-3" id="tmpl-lname">Chawla.</span></span>
+        </h1>
+        <div class="hero-bottom">
+            <p class="hero-desc">
+                <span class="reveal-mask"><span class="reveal-text delay-4" id="tmpl-desc">Based in Chandigarh, India. Specializing in financial accounting, cost management, and corporate reporting to drive analytical business solutions.</span></span>
+            </p>
+            <div class="btn-wrap magnetic-item reveal-mask">
+                <a href="#projects" class="btn btn-solid reveal-text delay-4"><i class="fas fa-arrow-down" style="margin-right: 10px;"></i> View Portfolio</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="editorial-section">
+        <div class="editorial-grid">
+            <div class="sticky-header">
+                <h2>Education</h2>
+                <p>Academic foundations, certifications, and leadership.</p>
+            </div>
+            
+            <div class="content-stream" id="tmpl-edu-list">
+                    <div class="stream-card tilt-card reveal-up">
+                        <div class="card-meta">
+                            <h3>Lovely Professional University</h3>
+                            <h4>Bachelor of Commerce (B. Com)</h4>
+                            <span>2023 - 2026 | Jalandhar, Punjab</span>
+                        </div>
+                        <div class="card-details">
+                            <p style="color: var(--accent); font-weight: 600; margin-bottom: 1.5rem;">Major in Accounting | CGPA: 8.57/10</p>
+                            <ul><li>Specialization: Financial Accounting, Corporate Accounting, Cost Accounting, and Management Accounting.</li><li>Academic Highlights: Recognized by faculty for subject excellence and active classroom participation.</li><li>Leadership: Frequently recommended for leadership roles, including Class Representative and university Entrepreneurship, Startup, and Academic committees.</li></ul>
+                        </div>
+                    </div>
+                
+                    <div class="stream-card tilt-card reveal-up">
+                        <div class="card-meta">
+                            <h3>Kundan International School</h3>
+                            <h4>Higher Secondary - Commerce</h4>
+                            <span>2020 - 2022 | Chandigarh, India</span>
+                        </div>
+                        <div class="card-details">
+                            <p style="color: var(--accent); font-weight: 600; margin-bottom: 1.5rem;">Score: 88.6%</p>
+                            <ul><li>Honors: Served as House Captain and actively participated in the Rotaract Club, contributing heavily to community and social service initiatives.</li><li>Coursework: Financial Accounting, Cost/Corporate Accounting, Company &amp; Business Laws, Income Tax, Financial Markets &amp; Management, Auditing.</li></ul>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills-section">
+        <div class="container" style="width: 100%;">
+            <h2 class="display-font reveal-up" style="font-size: clamp(2rem, 6vw, 3rem); text-align: center; margin-bottom: clamp(2rem, 5vw, 4rem);">Technical Arsenal</h2>
+            
+            <div class="metrics-grid" id="tmpl-metrics-list">
+                    <div class="metric-box reveal-up" style="transition-delay: 0.0s;">
+                        <h4>100Cr+</h4>
+                        <p>Notional Value Monitored</p>
+                    </div>
+                
+                    <div class="metric-box reveal-up" style="transition-delay: 0.1s;">
+                        <h4>50Cr+</h4>
+                        <p>Daily Turnover Managed</p>
+                    </div>
+                
+                    <div class="metric-box reveal-up" style="transition-delay: 0.2s;">
+                        <h4>14L+</h4>
+                        <p>Portfolio Analysed</p>
+                    </div>
+                
+                    <div class="metric-box reveal-up" style="transition-delay: 0.3s;">
+                        <h4>Top 5</h4>
+                        <p>Fin-Thon Trading Rank</p>
+                    </div>
+                </div>
+
+            <div class="skills-tags reveal-up" id="tmpl-skills-list"><div class="skill-tag magnetic-item">Cost Management &amp; Analysis</div><div class="skill-tag magnetic-item">Financial Accounting &amp; Bookkeeping</div><div class="skill-tag magnetic-item">Financial Analysis &amp; Reporting</div><div class="skill-tag magnetic-item">Auditing</div><div class="skill-tag magnetic-item">Tally</div><div class="skill-tag magnetic-item">Advanced Excel</div><div class="skill-tag magnetic-item">PowerPoint</div><div class="skill-tag magnetic-item">M&amp;A Accounting</div><div class="skill-tag magnetic-item">Purchase Price Allocation</div><div class="skill-tag magnetic-item">Corporate Finance Fundamentals</div></div>
+            
+            <p class="reveal-up" style="text-align: center; margin-top: 4rem; color: var(--text-muted);">
+                <strong id="tmpl-languages"></strong> English (Fluent), Hindi (Native).
+            </p>
+        </div>
+    </section>
+
+    <section id="experience" class="editorial-section">
+        <div class="editorial-grid">
+            <div class="sticky-header">
+                <h2>Experience</h2>
+                <p>Tracking risk, managing high-net-worth positions, and driving corporate profitability.</p>
+            </div>
+            
+            <div class="content-stream" id="tmpl-exp-list">
+                    <div class="stream-card tilt-card reveal-up">
+                        <div class="card-meta">
+                            <h3>Infinn (HKKR Finserv Pvt Ltd)</h3>
+                            <h4>Risk Management Intern</h4>
+                            <span>Jan 2026 - Present | Chandigarh</span>
+                        </div>
+                        <div class="card-details">
+                            <ul><li>Monitored live trading positions exceeding 100 Cr+ in notional value, covering 50 Cr+ daily turnover across multiple clients.</li><li>Assisted in real-time monitoring of client margins and exposure limits, ensuring strict zero-tolerance compliance with exchange and risk norms.</li><li>Supported precise square-off execution for margin shortfalls and limit breaches, aggressively minimizing risk exposure.</li><li>Developed batch automation scripts to convert exchange files into RMS software-compatible input formats, improving operational efficiency and reducing manual processing time.</li></ul>
+                        </div>
+                    </div>
+                
+                    <div class="stream-card tilt-card reveal-up">
+                        <div class="card-meta">
+                            <h3>Karenpeach.com (by Mona Apparels)</h3>
+                            <h4>Summer Intern</h4>
+                            <span>June - July 2025 | Ludhiana, Punjab</span>
+                        </div>
+                        <div class="card-details">
+                            <ul><li>Analyzed product performance by evaluating critical sales data, profit margins, and inventory turnover across transactions totaling over 14,00,000, identifying high- and low-performing items.</li><li>Contributed to strategic pricing adjustments by assessing complex cost structures and margin reports.</li><li>Improved overall product profitability and directly supported sales growth within the 14L+ portfolio.</li></ul>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects-stack-section">
+        <div class="projects-grid-layout">
+            
+            <div class="projects-left">
+                <h2>Selected<br>Projects.</h2>
+                <p>A strategic showcase of product design, market positioning, and comparative financial reporting.</p>
+            </div>
+
+            <div class="projects-right-window" id="tmpl-proj-list">
+                
+                <div class="project-card reveal-up">
+                    <div class="project-cover">
+                        <img src="assets/project1.jpeg" class="cover-img" alt="Grey Brick Research">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-category">Share Analysis</span>
+                        <h3>Grey Brick Research</h3>
+                        <p>Designed and developed Grey Brick Research, an institutional-style equity research platform focused on fundamental analysis, financial modeling, and investment insights. Built interactive dashboards, automated data pipelines, and professional research reports for Indian equities.</p>
+                        <ul>
+                            <li>Engineered a multi-page research system featuring financial statements, valuation metrics, peer comparison, and performance analytics.</li>
+                            <li>Integrated automated data collection, chart generation, and PDF-ready reporting using Python, HTML, CSS, JavaScript, and financial APIs.</li>
+                        </ul>
+                        <div class="project-action-footer magnetic-item">
+                            <a href="https://greybrickresearch.onrender.com/" target="_blank" class="btn-project">View Project <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                            
+                <div class="project-card reveal-up">
+                    <div class="project-cover">
+                        <img src="assets/project3.png" class="cover-img" alt="Automated RMS Dashboard">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-category">Messaging Service</span>
+                        <h3>DirectMessage</h3>
+                        <p>Designed and developed DirectMessage, a real-time messaging platform for seamless communication between users.</p>
+                        <ul>
+                            <li>Implemented end-to-end encryption for secure messaging.</li>
+                            <li>Optimized message delivery and storage mechanisms.</li>
+                        </ul>
+                        <div class="project-action-footer magnetic-item">
+                            <a href="https://directmessage.onrender.com/" target="_blank" class="btn-project">View Project <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card reveal-up">
+                    <div class="project-cover">
+                        <img src="https://cf-images.assettype.com/thequint%2F2025-09-08%2Fdu42bsot%2FHero-1-3.jpg?auto=format%2Ccompress&fmt=webp&width=720&w=1200" class="cover-img" alt="Zomato vs Swiggy">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-category">Accounting Standards</span>
+                        <h3>Zomato vs Swiggy</h3>
+                        <p>Conducted an aggressive comparative financial reporting study between Eternal (Zomato) and Swiggy. Examined financial statement preparation.</p>
+                        <ul>
+                            <li>Audited depreciation methods, useful lives, and the treatment of PPE.</li>
+                            <li>Evaluated strict compliance across intangible assets and corporate leases.</li>
+                        </ul>
+                        <div class="project-action-footer magnetic-item">
+                            <a href="assets/Companyanalysis.pdf" target="_blank" class="btn-project">Read Paper<i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="project-card reveal-up">
+                    <div class="project-cover">
+                        <img src="https://img.freepik.com/premium-vector/power-bank-icon-logo-vector-design-template_827767-1557.jpg" class="cover-img" alt="Valuation Model Structuring">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-category">Cost</span>
+                        <h3>Cost Accounting</h3>
+                        <p>Designed and developed the BijliBox Power Bank business case, integrating product design, market research, target costing, and profitability analysis to evaluate commercial viability in the consumer electronics sector.</p>
+                        <ul>
+                            <li>Conducted customer surveys and competitor analysis to identify optimal product specifications, pricing strategy, and target market positioning.</li>
+                            <li>Built detailed cost models, performed variance analysis, and implemented ABC and Value Engineering techniques to reduce unit costs from ₹840.65 to the target cost of ₹800 while preserving profitability.</li>
+                        </ul>
+                        <div class="project-action-footer magnetic-item">
+                            <a href="assets/Powerbank.pdf" target="_blank" class="btn-project">Read Paper<i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h2 class="display-font reveal-up">Deploy Contact.</h2>
+        <p class="reveal-up" style="margin-bottom: 3rem; color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.2rem);" id="tmpl-footer-contact">Reach me: Arjunchawla42@gmail.com</p>
+        <div class="footer-links reveal-up">
+            <div class="btn-wrap magnetic-item">
+                <a href="assets/resumecv.pdf" target="_blank" class="btn btn-solid" id="tmpl-btn-resume"><i class="fas fa-file-pdf" style="margin-right: 10px;"></i> Download CV</a>
+            </div>
+        </div>
+        <p class="reveal-up" style="color: var(--text-muted); font-size: 0.9rem; font-family: 'Space Grotesk'; text-transform: uppercase;" id="tmpl-copyright">
+                    Engineered with precision. <br><br>
+    <span style="font-size: 0.8rem; letter-spacing: 2px;">
+        Developed by
+        <a href="https://github.com/arjunchawlaafk" target="_blank"
+           style="color: var(--accent); text-decoration: none; font-weight: 700;">
+            Human
+        </a>
+    </span>
+
+    <br><br>
+    <!---
+    <span style="font-size: 0.8rem;">
+        Want a website like this?
+        <a href="https://yourwebsite.com" target="_blank"
+           style="color: var(--accent); text-decoration: none; font-weight: 600;">
+            Click Here →
+        </a>
+    </span>                </p>-->
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const breakpoint = 1024; 
+
+            // --- 0. MOBILE MENU TOGGLE ---
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            menuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                if(navLinks.classList.contains('active')){
+                    menuBtn.children[0].style.transform = 'rotate(45deg)';
+                    menuBtn.children[1].style.opacity = '0';
+                    menuBtn.children[2].style.transform = 'rotate(-45deg)';
+                } else {
+                    menuBtn.children[0].style.transform = 'rotate(0)';
+                    menuBtn.children[1].style.opacity = '1';
+                    menuBtn.children[2].style.transform = 'rotate(0)';
+                }
+            });
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    if(window.innerWidth <= breakpoint) {
+                        navLinks.classList.remove('active');
+                        menuBtn.children[0].style.transform = 'rotate(0)';
+                        menuBtn.children[1].style.opacity = '1';
+                        menuBtn.children[2].style.transform = 'rotate(0)';
+                    }
+                });
+            });
+
+            // --- 1. LIGHT / DARK THEME TOGGLE ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const body = document.documentElement; 
+            
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                body.setAttribute('data-theme', 'dark');
+                themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                if (body.getAttribute('data-theme') === 'dark') {
+                    body.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                    themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                } else {
+                    body.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+            });
+
+            // --- 2. LERP PHYSICS CUSTOM CURSOR ---
+            const dot = document.querySelector('.cursor-dot');
+            const circle = document.querySelector('.cursor-circle');
+            
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let circleX = mouseX;
+            let circleY = mouseY;
+            
+            window.addEventListener('mousemove', (e) => {
+                if(window.innerWidth <= breakpoint) return;
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+            });
+
+            const lerp = (start, end, factor) => start + (end - start) * factor;
+
+            const animateCursor = () => {
+                if(window.innerWidth > breakpoint) {
+                    circleX = lerp(circleX, mouseX, 0.2);
+                    circleY = lerp(circleY, mouseY, 0.2);
+                    circle.style.transform = `translate(${circleX}px, ${circleY}px) translate(-50%, -50%)`;
+                }
+                requestAnimationFrame(animateCursor);
+            };
+            animateCursor();
+
+            // --- 3. HOVER PHYSICS FOR CUSTOM CURSOR ---
+            const magneticItems = document.querySelectorAll('.magnetic-item');
+            
+            magneticItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    if(window.innerWidth > breakpoint) {
+                        document.body.classList.add('cursor-hover');
+                    }
+                });
+
+                item.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover');
+                });
+            });
+
+            // --- 4. 3D TILT PHYSICS FOR CARDS ---
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            
+            tiltCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    if(window.innerWidth <= breakpoint) return;
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -3;
+                    const rotateY = ((x - centerX) / centerX) * 3;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+
+            // --- 5. SCROLL REVEAL ANIMATIONS ---
+            const revealElements = document.querySelectorAll('.reveal-up, .reveal-text');
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -50px 0px',
+                threshold: 0.1
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            setTimeout(() => document.querySelector('.delay-1').classList.add('active'), 100);
+            setTimeout(() => document.querySelector('.delay-2').classList.add('active'), 300);
+            setTimeout(() => document.querySelector('.delay-3').classList.add('active'), 500);
+            setTimeout(() => document.querySelector('.delay-4').classList.add('active'), 700);
+        });
+    </script>
+
+</body></html>
